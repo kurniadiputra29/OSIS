@@ -2,16 +2,18 @@
 //UNTUK MENJAGA FIELD KITA, JIKA BELUM LOGIN
 session_start(); // itu di simpan di browser, bukan di mysql, maupun phpmyadmin
 if (isset($_SESSION['email'])) { // perbedaan isset dan empti adalah isset untuk mengecek data,
+
 include '../../config/koneksi.php';
 $ID   = $_POST['id'];
 $proker = $_POST['proker'];
-$jabatan = $_POST['jabatan'];
-$deadline 		=$_POST['deadline'];
-$tipe =$_POST['tipe'];
+$penjelasan = $_POST['penjelasan'];
+$status =$_POST['status'];
+$cari = $_POST['cari'];
 
-$sql = "UPDATE program_kerja SET jabatan='$jabatan', proker='$proker', deadline='$deadline', id_type='$tipe' WHERE id_proker='$ID'";
+$sql = "UPDATE cek_proker SET id_proker='$proker', jabatan='$cari', keterangan='$status', alasan='$penjelasan' WHERE id_cek='$ID'";
 mysqli_query($koneksi,$sql);
-header('location:index_proker.php');
+header("location:http://localhost/osis/admin/pengawasan_proker/index.php?cari=$cari");
+
 }  else{
     echo "Anda Belum Login, silahkan <a href='../../index.php'>login</a>";
     }

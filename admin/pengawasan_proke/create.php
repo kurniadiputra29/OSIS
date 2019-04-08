@@ -7,7 +7,7 @@ if (isset($_SESSION['email'])) { // perbedaan isset dan empti adalah isset untuk
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>OSIS | Anggota</title>
+  <title>OSIS | Pengawasan Proker</title>
   <?php
     include '../layout/header.php';
   ?>
@@ -83,7 +83,7 @@ if (isset($_SESSION['email'])) { // perbedaan isset dan empti adalah isset untuk
       <!-- /.search form -->
       <!-- sidebar menu: : style can be found in sidebar.less -->
       <?php
-          include '../layout/sidebar_anggota.php';
+          include '../layout/sidebar.php';
       ?>
     </section>
     <!-- /.sidebar -->
@@ -94,62 +94,43 @@ if (isset($_SESSION['email'])) { // perbedaan isset dan empti adalah isset untuk
     <!-- Content Header (Page header) -->
     <section class="content-header">
       <h1>
-        Anggota
-        <small>Input Anggota</small>
+        Pengawasan Program Kerja
+        <small>Control panel</small>
       </h1>
       <ol class="breadcrumb">
         <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
-        <li class="active">Anggota</li>
+        <li class="active">Pengawasan Program Kerja</li>
       </ol>
     </section>
 
     <!-- Main content -->
     <section class="content">
-                <div class="box">
+            <div class="box">
             <div class="box-header with-border">
-              <h3 class="box-title">Anggota</h3>
+              <h3 class="box-title">Pengawasan Program Kerja</h3>
             </div>
             <!-- /.box-header -->
-            <form class="form-horizontal" action="proses_create_anggota.php" method="POST" enctype="multipart/form-data"> <!--untuk inputan file harus di kasih enctype="multipart/form-data"-->
+            <form class="form-horizontal" action="proses_create.php" method="POST" >
+              <?php
+                $pencarian = isset($_GET['cari']) ? $_GET['cari']:'';
+              ?>
+              <input type="hidden" name="cari" value="<?= $pencarian ?>">
               <div class="box-body">
                 <div class="form-group">
-                  <label for="nama" class="col-sm-2 control-label">Nama</label>
+                  <label for="proker" class="col-sm-2 control-label">Program Kerja</label>
                   <div class="col-sm-10">
-                    <input type="text" name="nama" class="form-control" id="nama" placeholder="Nama" required>
-                  </div>
-                </div>
-                <div class="form-group">
-                  <label for="kelas" class="col-sm-2 control-label">Kelas</label>
-                  <div class="col-sm-10">
-                    <input type="text" name="kelas" class="form-control" id="kelas" placeholder="kelas" required>
-                  </div>
-                </div>
-                <div class="form-group">
-                  <label for="hp" class="col-sm-2 control-label">Hp</label>
-                  <div class="col-sm-10">
-                    <input type="text" name="hp" class="form-control" id="hp" placeholder="085xxx" >
-                  </div>
-                </div>
-                <div class="form-group">
-                  <label for="alamat" class="col-sm-2 control-label">Alamat</label>
-                  <div class="col-sm-10">
-                    <input type="text" name="alamat" class="form-control" id="alamat" placeholder="Alamat" required>
-                  </div>
-                </div>
-                <div class="form-group">
-                  <label for="jabatan" class="col-sm-2 control-label">Jabatan</label>
-                  <div class="col-sm-10">
-                    <select class="form-control" name="jabatan" id="jabatan" required>
-                    <option>-- Pilih Jabatan --</option>
+                    <select class="form-control" name="proker" id="proker" required>
+                    <option>-- Pilih Program Kerja --</option>
                     <?php
                     include '../../config/koneksi.php';
-                    $sql    = "SELECT * FROM jabatan";
+                    $cari   = isset($_GET['cari']) ? $_GET['cari']:'';
+                    $sql    = "SELECT * FROM program_kerja WHERE jabatan=$cari";
                     $result = mysqli_query($koneksi,$sql);// untuk menghubungkan databases melalui $connect dengan isinya melalui $sql tetapi masih acak
                     if(mysqli_num_rows($result)>0){// jika nggak ada datanya maka while tidak di jalankan
                       while ($row = mysqli_fetch_assoc($result)) {// untuk memunculkan dalam bentuk rapi, mengambil dan dijadikan erray associative
                         echo "
-                        <option value=".$row['id_jabatan'].">
-                          ".$row['nama']."
+                        <option value=".$row['id_proker'].">
+                          ".$row['proker']."
                         </option>
                         ";
                       }
@@ -159,15 +140,33 @@ if (isset($_SESSION['email'])) { // perbedaan isset dan empti adalah isset untuk
                   </div>
                 </div><!--form-group-->
                 <div class="form-group">
-                  <label for="foto" class="col-sm-2 control-label">File Foto</label>
-                  <div class="col-sm-10">
-                    <input type="file" name="foto" class="" id="foto" placeholder="Foto">
+                  <label for="tipe" class="col-sm-2 control-label">Keterangan</label>
+                  <div class="col-sm-10 radio">
+                    <label>
+                      <input type="radio" name="status" id="status" value="1" >
+                      Terlaksanan
+                    </label>
                   </div>
+                  <div class="col-sm-2 control-label"></div>
+                  <div class="col-sm-10 radio">
+                    <label>
+                      <input type="radio" name="status" id="status" value="0" >
+                      Tidak Terlaksanan
+                    </label>
+                  </div>
+                </div><!--form-group-->
+            <div class="box-header">
+                <label for="penjelasan"><h4><b>Penjelasan</b></h4></label>
+            </div>
+            <div>
+                <div class="box-body pad">
+                    <textarea name="penjelasan" id="penjelasan" class="textarea" placeholder="Place some text here"
+                              style="width: 100%; height: 200px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px;" required></textarea>
                 </div>
-              </div>
+            </div>
               <!-- /.box-body -->
               <div class="box-footer">
-                <a href="index_anggota.php" class="btn btn-default">Cancel</a>
+                <a href="index.php" class="btn btn-default">Cancel</a>
                 <button type="submit" class="btn btn-info pull-right">Submit</button>
               </div>
               <!-- /.box-footer -->

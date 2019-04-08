@@ -9,14 +9,14 @@ $koneksi = mysqli_connect($server, $user, $pass, $db);
 if (!$koneksi) {
 	die('keneksi gagal'. mysqli_connect_error());
 }
-$sql1 = "CREATE TABLE anggota (
-id_anggota INT(11) PRIMARY KEY AUTO_INCREMENT NOT NULL,
+$sql1 = "CREATE TABLE pengurus (
+id_pengurus INT(11) PRIMARY KEY AUTO_INCREMENT NOT NULL,
 nama VARCHAR(30) NOT NULL,
 kelas VARCHAR(50) NOT NULL,
 hp VARCHAR(20) NOT NULL,
 alamat VARCHAR(100) NOT NULL,
 jabatan VARCHAR(50) NOT NULL,
-foto VARCHAR(50) NOT NULL
+foto VARCHAR(50) NULL
 )";
 
 $sql2 = "CREATE TABLE tipe_proker (
@@ -28,6 +28,7 @@ $sql3 = "CREATE TABLE program_kerja (
 id_proker INT(11) PRIMARY KEY AUTO_INCREMENT NOT NULL,
 jabatan VARCHAR(50) NOT NULL,
 proker TEXT NULL,
+deadline date,
 id_type INT(11) NOT NULL
 )";
 

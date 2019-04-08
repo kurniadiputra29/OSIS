@@ -83,7 +83,7 @@ if (isset($_SESSION['email'])) { // perbedaan isset dan empti adalah isset untuk
       <!-- /.search form -->
       <!-- sidebar menu: : style can be found in sidebar.less -->
       <?php
-          include '../layout/sidebar_pengawasan.php';
+          include '../layout/sidebar.php';
       ?>
     </section>
     <!-- /.sidebar -->
@@ -166,7 +166,7 @@ if (isset($_SESSION['email'])) { // perbedaan isset dan empti adalah isset untuk
             </div>
               <!-- /.box-body -->
               <div class="box-footer">
-                <a href="index.php" class="btn btn-default">Cancel</a>
+                <a href="index.php?cari=<?php echo"$cari" ?>" class="btn btn-default">Cancel</a>
                 <button type="submit" class="btn btn-info pull-right">Submit</button>
               </div>
               <!-- /.box-footer -->

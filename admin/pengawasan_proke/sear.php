@@ -7,7 +7,7 @@ if (isset($_SESSION['email'])) { // perbedaan isset dan empti adalah isset untuk
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>OSIS | Program Kerja</title>
+  <title>OSIS | Pengawasan Proker</title>
   <?php
     include '../layout/header.php';
   ?>
@@ -65,7 +65,7 @@ if (isset($_SESSION['email'])) { // perbedaan isset dan empti adalah isset untuk
           <img src="../foto_user/<?php echo $_SESSION['foto']; ?>" class="img-circle" alt="User Image" style=" height: 50px; width: 50px;">
         </div>
         <div class="pull-left info">
-          <p> <?php echo $_SESSION['name']; /*<?= $_SESSION['email']; ?> ini sama dengan echo dan ini fersi terpendek*/
+          <p> <?php echo $_SESSION['nama']; /*<?= $_SESSION['email']; ?> ini sama dengan echo dan ini fersi terpendek*/
           ?></p>
           <a href="#"><i class="fa fa-circle text-success"></i> Online</a>
         </div>
@@ -94,49 +94,31 @@ if (isset($_SESSION['email'])) { // perbedaan isset dan empti adalah isset untuk
     <!-- Content Header (Page header) -->
     <section class="content-header">
       <h1>
-        Type Program Kerja
+        Pengawasan Program Kerja
         <small>Control panel</small>
       </h1>
       <ol class="breadcrumb">
         <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
-        <li class="active">Type Program Kerja</li>
+        <li class="active">Pengawasan Program Kerja</li>
       </ol>
     </section>
 
     <!-- Main content -->
     <section class="content">
-                <div class="box">
+            <div class="box">
             <div class="box-header with-border">
-              <h3 class="box-title">Type Program Kerja</h3>
+              <h3 class="box-title">Pilih Jabatan</h3>
             </div>
-            <!-- /.box-header -->
-            <?php
-            include '../../config/koneksi.php';
-            $ID     = $_GET['id'];
-            $sql1    = "select * from program_kerja where id_proker=$ID";
-            $result1 = mysqli_query($koneksi,$sql1);
-            $row1    = mysqli_fetch_assoc($result1);
-            $jabatan = $row1['jabatan'];
-            $type   = $row1['id_type'];
-            ?>
-            <form class="form-horizontal" action="proses_edit.php" method="POST" >
+
+            <form class="form-horizontal" action="index.php" method="get" >
+              <?php
+                $pencarian = isset($_GET['cari']) ? $_GET['cari']:'';
+                ?>
               <div class="box-body">
                 <div class="form-group">
-                  <input type="hidden" name="id" value="<?php echo $ID; ?> " >
-                  <label for="jabatan" class="col-sm-2 control-label">Jabatan</label>
-                  <div class="col-sm-10">
-                    <select class="form-control" name="jabatan" id="jabatan" required>
-                    <?php
-                    include '../../config/koneksi.php';
-                    $sql2    = "SELECT * FROM jabatan WHERE id_jabatan=$jabatan";
-                    $result2 = mysqli_query($koneksi,$sql2);
-                    $row2    = mysqli_fetch_assoc($result2);
-                        echo "
-                        <option value=".$jabatan.">
-                          ".$row2['nama']."
-                        </option>
-                        ";
-                    ?>
+                  <div class="col-sm-12">
+                    <select class="form-control" name="cari" id="proker" value="<?= $pencarian ?>" required>
+                    <option value="">-- Pilih Jabatan --</option>
                     <?php
                     include '../../config/koneksi.php';
                     $sql    = "SELECT * FROM jabatan";
@@ -154,65 +136,13 @@ if (isset($_SESSION['email'])) { // perbedaan isset dan empti adalah isset untuk
                     </select>
                   </div>
                 </div><!--form-group-->
-                <div class="form-group">
-                  <label for="tipe" class="col-sm-2 control-label">Tipe</label>
-                  <div class="col-sm-10">
-                    <select class="form-control" name="tipe" id="tipe" required>
-                    <?php
-                    include '../../config/koneksi.php';
-                    $sql3    = "SELECT * FROM tipe_proker WHERE id_type=$type";
-                    $result3 = mysqli_query($koneksi,$sql3);
-                    $row3    = mysqli_fetch_assoc($result3);
-                        echo "
-                        <option value=".$type.">
-                          ".$row3['nama']."
-                        </option>
-                        ";
-                    ?>
-                    <?php
-                    include '../../config/koneksi.php';
-                    $sql    = "SELECT * FROM tipe_proker";
-                    $result = mysqli_query($koneksi,$sql);// untuk menghubungkan databases melalui $connect dengan isinya melalui $sql tetapi masih acak
-                    if(mysqli_num_rows($result)>0){// jika nggak ada datanya maka while tidak di jalankan
-                      while ($row = mysqli_fetch_assoc($result)) {// untuk memunculkan dalam bentuk rapi, mengambil dan dijadikan erray associative
-                        echo "
-                        <option value=".$row['id_type'].">
-                          ".$row['nama']."
-                        </option>
-                        ";
-                      }
-                    }
-                    ?>
-                    </select>
-                  </div>
-                </div><!--form-group-->
-            <div class="box-body">
-              <div class="form-group">
-                <label for="deadline" class="col-sm-2 control-label">Deadline</label>
-                <div class="col-sm-10">
-                    <input type="date" name="deadline" id="deadline">
+                <div class="box-footer">
+                      <a href="index.php" class="btn btn-default">Cancel</a>
+                      <button type="submit" class="btn btn-info pull-right">Submit</button>
                 </div>
-              </div>
-            </div>
-            <div class="box-header">
-                <label for="Program Kerja"><h3>Input Program Kerja</h3></label>
-            </div>
-            <div>
-                <div class="box-body pad">
-                    <textarea name="proker" class="textarea" 
-                              style="width: 100%; height: 200px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px;" required><?php echo $row1['proker']; ?></textarea>
-                </div>
-            </div>
-              <!-- /.box-body -->
-              <div class="box-footer">
-                <a href="index_proker.php" class="btn btn-default">Cancel</a>
-                <button type="submit" class="btn btn-info pull-right">Submit</button>
-              </div>
-              <!-- /.box-footer -->
-            </form>
                 </tr>
               </table>
-            </div>
+            </form>
             <!-- /.box-body -->
           </div>
     </section>

@@ -83,7 +83,7 @@ if (isset($_SESSION['email'])) { // perbedaan isset dan empti adalah isset untuk
       <!-- /.search form -->
       <!-- sidebar menu: : style can be found in sidebar.less -->
       <?php
-          include '../layout/sidebar_pengawasan.php';
+          include '../layout/sidebar.php';
       ?>
     </section>
     <!-- /.sidebar -->
@@ -104,13 +104,52 @@ if (isset($_SESSION['email'])) { // perbedaan isset dan empti adalah isset untuk
     </section>
 
     <!-- Main content -->
-    <section class="content">
-                <div class="box">
+    <section class="content col-sm-3">
+          <div class="box ">
+            <div class="box-header with-border">
+              <h3 class="box-title">Pilih Jabatan</h3>
+            </div>
+
+            <form class="form-horizontal" action="" method="get" >
+              <div class="box-body">
+                <div class="form-group">
+                  <div class="col-sm-12">
+                    <select class="form-control" name="cari" id="proker" value="<?= $pencarian ?>" required>
+                    <option value="">-- Pilih Jabatan --</option>
+                    <?php
+                    include '../../config/koneksi.php';
+                    $sql    = "SELECT * FROM jabatan";
+                    $result = mysqli_query($koneksi,$sql);// untuk menghubungkan databases melalui $connect dengan isinya melalui $sql tetapi masih acak
+                    if(mysqli_num_rows($result)>0){// jika nggak ada datanya maka while tidak di jalankan
+                      while ($row = mysqli_fetch_assoc($result)) {// untuk memunculkan dalam bentuk rapi, mengambil dan dijadikan erray associative
+                        echo "
+                        <option value=".$row['id_jabatan'].">
+                          ".$row['nama']."
+                        </option>
+                        ";
+                      }
+                    }
+                    ?>
+                    </select>
+                  </div>
+                </div><!--form-group-->
+                <div class="box-footer">
+                      <a href="index.php" class="btn btn-default">Cancel</a>
+                      <button type="submit" class="btn btn-info pull-right">Submit</button>
+                </div>
+                </tr>
+              </table>
+            </form>
+            <!-- /.box-body -->
+          </div>
+    </section>
+    <section class="content col-sm-9">
+          <div class="box">
             <div class="box-header with-border">
               <h3 class="box-title">Pengawasan Program Kerja</h3>
                <div class="box-tools">
 
-            <form class="form-horizontal" action="create.php" method="get" >
+             <form class="form-horizontal" action="create.php" method="get" >
                 <?php
                 $pencarian = isset($_GET['cari']) ? $_GET['cari']:'';
                 ?>
@@ -136,22 +175,22 @@ if (isset($_SESSION['email'])) { // perbedaan isset dan empti adalah isset untuk
                 <?php
                   include '../../config/koneksi.php';
                   include '../../config/function.php';
-                  $nomor  = 1;
-                  $cari   = isset($_GET['cari']) ? $_GET['cari']:'';
-                  $sql    = "SELECT * FROM cek_proker WHERE jabatan=$cari" ;
-                  $result = mysqli_query($koneksi,$sql);// untuk menghubungkan databases melalui $connect dengan isinya melalui $sql tetapi masih acak
-                  if(mysqli_num_rows($result)>0){// jika nggak ada datanya maka while tidak di jalankan
-                    while ($row = mysqli_fetch_assoc($result)) {// untuk memunculkan dalam bentuk rapi, mengambil dan dijadikan erray associative
+                  $nomor2 = 1;
+                  $cari2   = isset($_GET['cari']) ? $_GET['cari']:'';
+                  $sql2    = "SELECT * FROM cek_proker WHERE jabatan=$cari2" ;
+                  $result2 = mysqli_query($koneksi,$sql2);// untuk menghubungkan databases melalui $connect dengan isinya melalui $sql tetapi masih acak
+                  if(mysqli_num_rows($result2)>0){// jika nggak ada datanya maka while tidak di jalankan
+                    while ($row2 = mysqli_fetch_assoc($result2)) {// untuk memunculkan dalam bentuk rapi, mengambil dan dijadikan erray associative
                       echo "
                       <tr>
-                        <td>".$nomor++."</td>
-                        <td>".jabatan($row['jabatan'])."</td>
-                        <td>".proker($row['id_proker'])."</td>
-                        <td>".status($row['keterangan'])."</td>
-                        <td>".$row['alasan']."</td>
+                        <td>".$nomor2++."</td>
+                        <td>".jabatan($row2['jabatan'])."</td>
+                        <td>".proker($row2['id_proker'])."</td>
+                        <td>".status($row2['keterangan'])."</td>
+                        <td>".$row2['alasan']."</td>
                         <td>
-                          <a href='edit.php?id=".$row['id_cek']."' class='btn btn-primary btn-x5'>Edit</a> |
-                          <a href='hapus.php?id=".$row['id_cek']."' class='btn btn-danger btn-x5' onclick='javascript:return confirm(\"Apakah anda yakin ingin menghapus data ini?\")'>Hapus</a>
+                          <a href='edit.php?id=".$row2['id_cek']."' class='btn btn-primary btn-x5'>Edit</a> |
+                          <a href='hapus.php?id=".$row2['id_cek']."' class='btn btn-danger btn-x5' onclick='javascript:return confirm(\"Apakah anda yakin ingin menghapus data ini?\")'>Hapus</a>
                         </td>
                       </tr>
                       ";

@@ -83,7 +83,7 @@ if (isset($_SESSION['email'])) { // perbedaan isset dan empti adalah isset untuk
       <!-- /.search form -->
       <!-- sidebar menu: : style can be found in sidebar.less -->
       <?php
-          include '../layout/sidebar_user.php';
+          include '../layout/sidebar.php';
       ?>
     </section>
     <!-- /.sidebar -->
@@ -133,7 +133,7 @@ if (isset($_SESSION['email'])) { // perbedaan isset dan empti adalah isset untuk
                 <div class="form-group">
                   <label for="foto" class="col-sm-2 control-label">File Foto</label>
                   <div class="col-sm-10">
-                    <input type="file" name="foto" class="form-control" id="foto" placeholder="Foto">
+                    <input type="file" name="foto" class="" id="foto" placeholder="Foto">
                   </div>
                 </div>
                 <div class="form-group">
@@ -166,9 +166,6 @@ if (isset($_SESSION['email'])) { // perbedaan isset dan empti adalah isset untuk
               </div>
               <!-- /.box-footer -->
             </form>
-                </tr>
-              </table>
-            </div>
             <!-- /.box-body -->
           </div>
     </section>

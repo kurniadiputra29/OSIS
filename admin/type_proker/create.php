@@ -83,7 +83,7 @@ if (isset($_SESSION['email'])) { // perbedaan isset dan empti adalah isset untuk
       <!-- /.search form -->
       <!-- sidebar menu: : style can be found in sidebar.less -->
       <?php
-          include '../layout/sidebar_type_proker.php';
+          include '../layout/sidebar.php';
       ?>
     </section>
     <!-- /.sidebar -->
@@ -126,9 +126,6 @@ if (isset($_SESSION['email'])) { // perbedaan isset dan empti adalah isset untuk
               </div>
               <!-- /.box-footer -->
             </form>
-                </tr>
-              </table>
-            </div>
             <!-- /.box-body -->
           </div>
     </section>

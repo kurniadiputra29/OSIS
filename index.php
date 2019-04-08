@@ -30,11 +30,11 @@
 <body class="hold-transition login-page">
 <div class="login-box">
   <div class="login-logo">
-    <a href="../../index2.html"><b>OSIS</b></a>
+    <a href="../../index2.html"><b>OSIS</b>Muha</a>
   </div>
   <!-- /.login-logo -->
   <div class="login-box-body">
-    <p class="login-box-msg">Sign in to start your session</p>
+    <img src="logo-osis.png" style="width: 150px; margin: auto; display: flex; justify-content: center; margin-bottom: 20px;">
 
     <form action="config/proses_login.php" method="post">
       <div class="form-group has-feedback">
@@ -46,16 +46,9 @@
         <span class="glyphicon glyphicon-lock form-control-feedback"></span>
       </div>
       <div class="row">
-        <div class="col-xs-8">
-          <div class="checkbox icheck">
-            <label>
-              <input type="checkbox">
-            </label>
-          </div>
-        </div>
         <!-- /.col -->
-        <div class="col-xs-4">
-          <button type="submit" class="btn btn-primary btn-block btn-flat">Sign In</button>
+        <div class="col-xs-12">
+          <button type="submit" class="btn btn-primary btn-block btn-flat">Masuk</button>
         </div>
         <!-- /.col -->
       </div>
@@ -63,6 +56,7 @@
   </div>
   <!-- /.login-box-body -->
 </div>
+
 <!-- /.login-box -->
 
 <!-- jQuery 3 -->

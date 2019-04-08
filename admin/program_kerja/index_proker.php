@@ -83,7 +83,7 @@ if (isset($_SESSION['email'])) { // perbedaan isset dan empti adalah isset untuk
       <!-- /.search form -->
       <!-- sidebar menu: : style can be found in sidebar.less -->
       <?php
-          include '../layout/sidebar_proker.php';
+          include '../layout/sidebar.php';
       ?>
     </section>
     <!-- /.sidebar -->
@@ -135,6 +135,7 @@ if (isset($_SESSION['email'])) { // perbedaan isset dan empti adalah isset untuk
                   <th>Jabatan</th>
                   <th>Type</th>
                   <th>Proker</th>
+                  <th>Deadline</th>
                   <th>Action</th>
                 </tr>                
                 <?php
@@ -152,6 +153,7 @@ if (isset($_SESSION['email'])) { // perbedaan isset dan empti adalah isset untuk
                         <td>".jabatan($row['jabatan'])."</td>
                         <td>".type($row['id_type'])."</td>
                         <td>".$row['proker']."</td>
+                        <td>".$row['deadline']."</td>
                         <td>
                           <a href='edit.php?id=".$row['id_proker']."' class='btn btn-primary btn-x5'>Edit</a> |
                           <a href='hapus.php?id=".$row['id_proker']."' class='btn btn-danger btn-x5' onclick='javascript:return confirm(\"Apakah anda yakin ingin menghapus data ini?\")'>Hapus</a>

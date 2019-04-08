@@ -4,14 +4,15 @@ session_start(); // itu di simpan di browser, bukan di mysql, maupun phpmyadmin
 if (isset($_SESSION['email'])) { // perbedaan isset dan empti adalah isset untuk mengecek data, 
 
 include '../../config/koneksi.php';
-$proker 	= $_POST['proker'];
-$jabatan 	= $_POST['jabatan'];
-$deadline 		=$_POST['deadline'];
-$tipe 		=$_POST['tipe'];
+$proker = $_POST['proker'];
+$penjelasan = $_POST['penjelasan'];
+$status =$_POST['status'];
+$cari = $_POST['cari'];
 
-$sql = "INSERT INTO program_kerja (jabatan, proker, deadline, id_type) VALUES ('$jabatan', '$proker', '$deadline', '$tipe')";
+$sql = "INSERT INTO cek_proker (id_proker, jabatan, keterangan, alasan) VALUES ('$proker', '$cari', '$status' , '$penjelasan')";
 mysqli_query($koneksi,$sql);
-header('location:index_proker.php');
+header("location:http://localhost/osis/admin/pengawasan_proker/index.php?cari=$cari");
+
 }  else{
     echo "Anda Belum Login, silahkan <a href='../../index.php'>login</a>";
     }

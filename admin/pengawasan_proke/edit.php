@@ -7,7 +7,7 @@ if (isset($_SESSION['email'])) { // perbedaan isset dan empti adalah isset untuk
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>OSIS | Anggota</title>
+  <title>OSIS | Pengawasan Proker</title>
   <?php
     include '../layout/header.php';
   ?>
@@ -65,7 +65,7 @@ if (isset($_SESSION['email'])) { // perbedaan isset dan empti adalah isset untuk
           <img src="../foto_user/<?php echo $_SESSION['foto']; ?>" class="img-circle" alt="User Image" style=" height: 50px; width: 50px;">
         </div>
         <div class="pull-left info">
-          <p> <?php echo $_SESSION['nama']; /*<?= $_SESSION['email']; ?> ini sama dengan echo dan ini fersi terpendek*/
+          <p> <?php echo $_SESSION['name']; /*<?= $_SESSION['email']; ?> ini sama dengan echo dan ini fersi terpendek*/
           ?></p>
           <a href="#"><i class="fa fa-circle text-success"></i> Online</a>
         </div>
@@ -83,7 +83,7 @@ if (isset($_SESSION['email'])) { // perbedaan isset dan empti adalah isset untuk
       <!-- /.search form -->
       <!-- sidebar menu: : style can be found in sidebar.less -->
       <?php
-          include '../layout/sidebar_anggota.php';
+          include '../layout/sidebar.php';
       ?>
     </section>
     <!-- /.sidebar -->
@@ -94,12 +94,12 @@ if (isset($_SESSION['email'])) { // perbedaan isset dan empti adalah isset untuk
     <!-- Content Header (Page header) -->
     <section class="content-header">
       <h1>
-        Anggota
-        <small>Edit Anggota</small>
+        Pengawasan Program Kerja
+        <small>Control panel</small>
       </h1>
       <ol class="breadcrumb">
         <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
-        <li class="active">Anggota</li>
+        <li class="active">Pengawasan Program Kerja</li>
       </ol>
     </section>
 
@@ -107,60 +107,83 @@ if (isset($_SESSION['email'])) { // perbedaan isset dan empti adalah isset untuk
     <section class="content">
                 <div class="box">
             <div class="box-header with-border">
-              <h3 class="box-title">Anggota</h3>
+              <h3 class="box-title">Pengawasan Program Kerja</h3>
             </div>
             <!-- /.box-header -->
-             <?php
+            <?php
             include '../../config/koneksi.php';
             $ID     = $_GET['id'];
-            $sql    = "select * from anggota where id_anggota=$ID";
-            $result = mysqli_query($koneksi,$sql);
-            $row    = mysqli_fetch_assoc($result);
+            $sql1    = "SELECT * from cek_proker where id_cek=$ID";
+            $result1 = mysqli_query($koneksi,$sql1);
+            $row1    = mysqli_fetch_assoc($result1);
+            $jabatan = $row1['jabatan'];
+            $tampil   = $row1['id_proker'];
+            $sql3    = "SELECT * from program_kerja where id_proker=$tampil";
+            $result3 = mysqli_query($koneksi,$sql3);
+            $row3    = mysqli_fetch_assoc($result3);
+            $seleck   = $row3['proker'];
             ?>
-            <form class="form-horizontal" action="proses_edit_anggota.php" method="POST" enctype="multipart/form-data">
+            <form class="form-horizontal" action="proses_edit.php" method="POST" >
               <div class="box-body">
                 <div class="form-group">
+                  <input type="hidden" name="cari" value="<?= $jabatan ?>">
                   <input type="hidden" name="id" value="<?php echo $ID; ?> " >
-                  <label for="nama" class="col-sm-2 control-label">Nama</label>
+                  <label for="proker" class="col-sm-2 control-label">Program Kerja</label>
                   <div class="col-sm-10">
-                    <input type="text" name="nama" class="form-control" id="nama" value="<?php echo $row['nama']; ?>" required>
+                    <select class="form-control" name="proker" id="proker" required>
+                    <?php
+                    echo "
+                        <option value=".$tampil.">
+                          ".$seleck."
+                        </option>
+                        ";
+                    ?>
+                    <?php
+                    include '../../config/koneksi.php';
+                    $cari   = isset($_GET['cari']) ? $_GET['cari']:'';
+                    $sql    = "SELECT * FROM program_kerja WHERE jabatan=$jabatan";
+                    $result = mysqli_query($koneksi,$sql);// untuk menghubungkan databases melalui $connect dengan isinya melalui $sql tetapi masih acak
+                    if(mysqli_num_rows($result)>0){// jika nggak ada datanya maka while tidak di jalankan
+                      while ($row = mysqli_fetch_assoc($result)) {// untuk memunculkan dalam bentuk rapi, mengambil dan dijadikan erray associative
+                        echo "
+                        <option value=".$row['id_proker'].">
+                          ".$row['proker']."
+                        </option>
+                        ";
+                      }
+                    }
+                    ?>
+                    </select>
                   </div>
-                </div>
+                </div><!--form-group-->
                 <div class="form-group">
-                  <label for="kelas" class="col-sm-2 control-label">Kelas</label>
-                  <div class="col-sm-10">
-                    <input type="text" name="kelas" class="form-control" id="kelas" value="<?php echo $row['kelas']; ?>" required>
+                  <label for="tipe" class="col-sm-2 control-label">Keterangan</label>
+                  <div class="col-sm-10 radio">
+                    <label>
+                      <input type="radio" name="status" id="status" value="1" <?php if ($row1['keterangan']=="1"){echo "checked";}?>>
+                      Terlaksanan
+                    </label>
                   </div>
-                </div>
-                <div class="form-group">
-                  <label for="hp" class="col-sm-2 control-label">Hp</label>
-                  <div class="col-sm-10">
-                    <input type="text" name="hp" class="form-control" id="hp" value="<?php echo $row['hp']; ?>" >
+                  <div class="col-sm-2 control-label"></div>
+                  <div class="col-sm-10 radio">
+                    <label>
+                      <input type="radio" name="status" id="status" value="0" <?php if ($row1['keterangan']=="0"){echo "checked";}?>>
+                      Tidak Terlaksanan
+                    </label>
                   </div>
+                </div><!--form-group-->
+            <div class="box-header">
+                <label for="penjelasan"><h4><b>Penjelasan</b></h4></label>
+            </div>
+            <div>
+                <div class="box-body pad">
+                    <textarea name="penjelasan" id="penjelasan" class="textarea" placeholder="Place some text here"
+                              style="width: 100%; height: 200px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px;" required><?php echo $row1['alasan']; ?></textarea>
                 </div>
-                <div class="form-group">
-                  <label for="alamat" class="col-sm-2 control-label">Alamat</label>
-                  <div class="col-sm-10">
-                    <input type="text" name="alamat" class="form-control" id="alamat" value="<?php echo $row['alamat']; ?>" required>
-                  </div>
-                </div>
-                <div class="form-group">
-                  <label for="jabatan" class="col-sm-2 control-label">Jabatan</label>
-                  <div class="col-sm-10">
-                    <input type="text" name="jabatan" class="form-control" id="jabatan" value="<?php echo $row['jabatan']; ?>" required>
-                  </div>
-                </div>
-                <div class="form-group">
-                  <label for="foto" class="col-sm-2 control-label">File Foto</label>
-                  <div class="col-sm-10">
-                    <input type="file" name="foto" class="" id="foto" placeholder="Foto">
-                    <span><img style="width: 100px; height: 100px; margin-top: 15px;" src="foto_anggota/<?php echo $row['foto'];?>"</span>
-                  </div>
-                </div>
-              </div>
+            </div>
               <!-- /.box-body -->
               <div class="box-footer">
-                <a href="index_anggota.php" class="btn btn-default">Cancel</a>
+                <a href="index.php" class="btn btn-default">Cancel</a>
                 <button type="submit" class="btn btn-info pull-right">Submit</button>
               </div>
               <!-- /.box-footer -->

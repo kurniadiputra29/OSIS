@@ -7,7 +7,7 @@ if (isset($_SESSION['email'])) { // perbedaan isset dan empti adalah isset untuk
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>OSIS | Pengawasan Proker</title>
+  <title>OSIS | Pengurus</title>
   <?php
     include '../layout/header.php';
   ?>
@@ -62,7 +62,7 @@ if (isset($_SESSION['email'])) { // perbedaan isset dan empti adalah isset untuk
       <!-- Sidebar user panel -->
       <div class="user-panel">
         <div class="pull-left image">
-          <img src="../foto_user/<?php echo $_SESSION['foto']; ?>" class="img-circle" alt="User Image" style=" height: 50px; width: 50px;">
+          <img src=../foto_user/<?php echo $_SESSION['foto'];?> class="img-circle" alt="User Image" style=" height: 50px; width: 50px;">
         </div>
         <div class="pull-left info">
           <p> <?php echo $_SESSION['nama']; /*<?= $_SESSION['email']; ?> ini sama dengan echo dan ini fersi terpendek*/
@@ -83,7 +83,7 @@ if (isset($_SESSION['email'])) { // perbedaan isset dan empti adalah isset untuk
       <!-- /.search form -->
       <!-- sidebar menu: : style can be found in sidebar.less -->
       <?php
-          include '../layout/sidebar_pengawasan.php';
+          include '../layout/sidebar.php';
       ?>
     </section>
     <!-- /.sidebar -->
@@ -94,56 +94,91 @@ if (isset($_SESSION['email'])) { // perbedaan isset dan empti adalah isset untuk
     <!-- Content Header (Page header) -->
     <section class="content-header">
       <h1>
-        Pengawasan Program Kerja
+        Pengurus OSIS
         <small>Control panel</small>
       </h1>
       <ol class="breadcrumb">
         <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
-        <li class="active">Pengawasan Program Kerja</li>
+        <li class="active">Pengurus OSIS</li>
       </ol>
     </section>
 
     <!-- Main content -->
     <section class="content">
-            <div class="box">
+          <div class="box">
             <div class="box-header with-border">
-              <h3 class="box-title">Pilih Jabatan</h3>
-            </div>
-
-            <form class="form-horizontal" action="index.php" method="get" >
-              <?php
+              <h3 class="box-title">Pengurus OSIS</h3>
+               <div class="box-tools">
+                <?php
                 $pencarian = isset($_GET['cari']) ? $_GET['cari']:'';
                 ?>
-              <div class="box-body">
-                <div class="form-group">
-                  <div class="col-sm-12">
-                    <select class="form-control" name="cari" id="proker" value="<?= $pencarian ?>" required>
-                    <option value="">-- Pilih Jabatan --</option>
-                    <?php
-                    include '../../config/koneksi.php';
-                    $sql    = "SELECT * FROM jabatan";
-                    $result = mysqli_query($koneksi,$sql);// untuk menghubungkan databases melalui $connect dengan isinya melalui $sql tetapi masih acak
-                    if(mysqli_num_rows($result)>0){// jika nggak ada datanya maka while tidak di jalankan
-                      while ($row = mysqli_fetch_assoc($result)) {// untuk memunculkan dalam bentuk rapi, mengambil dan dijadikan erray associative
-                        echo "
-                        <option value=".$row['id_jabatan'].">
-                          ".$row['nama']."
-                        </option>
-                        ";
-                      }
-                    }
-                    ?>
-                    </select>
+                <form action="" method="get">
+                <a href="create.php" class="btn btn-primary pull-right">Create</a>
+                <a href="http://localhost/osis/admin/anggota/index.php" class="btn btn-primary pull-right">Clear</a>
+                  <div class="input-group input-group-sm" style="width: 150px;">
+                    <input type="text" name="cari" class="form-control pull-right" placeholder="Search" value="<?= $pencarian ?>">
+
+                    <div class="input-group-btn">
+                      <button type="submit" class="btn btn-default"><i class="fa fa-search"></i></button>
+                    </div>
                   </div>
-                </div><!--form-group-->
-                <div class="box-footer">
-                      <a href="index.php" class="btn btn-default">Cancel</a>
-                      <button type="submit" class="btn btn-info pull-right">Submit</button>
-                </div>
+                </form>
+              </div>
+            </div>
+
+            <!-- /.box-header -->
+            <div class="box-body">
+              <table class="table table-bordered">
+                <tr>
+                  <th style="width: 10px">No</th>
+                  <th>Nama</th>
+                  <th>Kelas</th>
+                  <th>Hp</th>
+                  <th>Alamat</th>
+                  <th>Jabatan</th>
+                  <th>Foto</th>
+                  <th>Action</th>
+                </tr>                
+                <?php
+                  include '../../config/koneksi.php';
+                  include '../../config/function.php';
+                  $nomor  = 1;
+                  $cari   = isset($_GET['cari']) ? $_GET['cari']:'';
+                  $sql    = "SELECT * FROM pengurus WHERE nama LIKE '%$cari%'";
+                  $result = mysqli_query($koneksi,$sql);// untuk menghubungkan databases melalui $connect dengan isinya melalui $sql tetapi masih acak
+                  if(mysqli_num_rows($result)>0){// jika nggak ada datanya maka while tidak di jalankan
+                    while ($row = mysqli_fetch_assoc($result)) {// untuk memunculkan dalam bentuk rapi, mengambil dan dijadikan erray associative
+                      echo "
+                      <tr>
+                        <td>".$nomor++."</td>
+                        <td>".$row['nama']."</td>
+                        <td>".$row['kelas']."</td>
+                        <td>".$row['hp']."</td>
+                        <td>".$row['alamat']."</td>
+                        <td>".jabatan($row['jabatan'])."</td>
+                        <td>".'<img style="width: 100px; height: 100px" src="foto/'.$row['foto']. ' " />'."</td>
+                        <td>
+                          <a href='edit.php?id=".$row['id_pengurus']."' class='btn btn-primary btn-x5'>Edit</a> |
+                          <a href='hapus.php?id=".$row['id_pengurus']."' class='btn btn-danger btn-x5' onclick='javascript:return confirm(\"Apakah anda yakin ingin menghapus data ini?\")'>Hapus</a>
+                        </td>
+                      </tr>
+                      ";
+                    }
+                  }
+                  ?>
                 </tr>
               </table>
-            </form>
+            </div>
             <!-- /.box-body -->
+            <div class="box-footer clearfix">
+              <ul class="pagination pagination-sm no-margin pull-right">
+                <li><a href="#">&laquo;</a></li>
+                <li><a href="#">1</a></li>
+                <li><a href="#">2</a></li>
+                <li><a href="#">3</a></li>
+                <li><a href="#">&raquo;</a></li>
+              </ul>
+            </div>
           </div>
     </section>
     <!-- /.content -->

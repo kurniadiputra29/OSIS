@@ -83,7 +83,7 @@ if (isset($_SESSION['email'])) { // perbedaan isset dan empti adalah isset untuk
       <!-- /.search form -->
       <!-- sidebar menu: : style can be found in sidebar.less -->
       <?php
-          include '../layout/sidebar_proker.php';
+          include '../layout/sidebar.php';
       ?>
     </section>
     <!-- /.sidebar -->
@@ -105,7 +105,7 @@ if (isset($_SESSION['email'])) { // perbedaan isset dan empti adalah isset untuk
 
     <!-- Main content -->
     <section class="content">
-                <div class="box">
+          <div class="box">
             <div class="box-header with-border">
               <h3 class="box-title">Program Kerja</h3>
             </div>
@@ -156,6 +156,14 @@ if (isset($_SESSION['email'])) { // perbedaan isset dan empti adalah isset untuk
                     </select>
                   </div>
                 </div><!--form-group-->
+            <div class="box-body">
+              <div class="form-group">
+                <label for="deadline" class="col-sm-2 control-label">Deadline</label>
+                <div class="col-sm-10">
+                    <input type="date" name="deadline" id="deadline">
+                </div>
+              </div>
+            </div>
             <div class="box-header">
                 <label for="Program Kerja"><h3>Input Program Kerja</h3></label>
             </div>

@@ -15,22 +15,22 @@ if (isset($_SESSION['email'])) { // perbedaan isset dan empti adalah isset untuk
 
 	// Apabila gambar tidak diganti
 	if (empty($nama_gambar)){
-	    $sql = "UPDATE anggota SET 
+	    $sql = "UPDATE pengurus SET 
 	    					nama    = '$name',
 	    					kelas   = '$kelas',
-	    					hp 		= '$hp'
+	    					hp 		= '$hp',
 	    					alamat    = '$alamat',
-	    					jabatan   = '$jabatan',
-	                    WHERE id_anggota ='$ID'";
+	    					jabatan   = '$jabatan'
+	                    WHERE id_pengurus ='$ID'";
 	    mysqli_query($koneksi,$sql);
-	 	header('location:index_anggota.php');
+	 	header('location:index.php');
 	}else{
 
-		$sql1    = "SELECT foto FROM anggota where id_anggota=$ID";
+		$sql1    = "SELECT foto FROM pengurus where id_pengurus=$ID";
 		$result1 = mysqli_query($koneksi,$sql1);
 		$row1   = mysqli_fetch_assoc($result1);
 		echo $img = $row1['foto'];
-		$gambar = "foto_anggota/".$img;
+		$gambar = "foto/".$img;
 
 		if (!unlink($gambar)) {
 			echo ("Error deleting $gambar");
@@ -38,18 +38,18 @@ if (isset($_SESSION['email'])) { // perbedaan isset dan empti adalah isset untuk
 			echo ("Deleted $img SUCCES");
 		}
 		$nama_baru = round(microtime(true)). '.jpg' . end($nama_gambar);//fungsi untuk membuat nama acak
-		move_uploaded_file($tmp_name, "foto_anggota/". $nama_baru);
+		move_uploaded_file($tmp_name, "foto/". $nama_baru);
 	    //move_uploaded_file($_FILES['gambar']['tmp_name'],'images/'.$nama_gambar);
-	    $sql = "UPDATE anggota SET 
+	    $sql = "UPDATE pengurus SET 
 	    					nama    = '$name',
 	    					kelas   = '$kelas',
 	    					hp 		= '$hp',
 	    					alamat    = '$alamat',
 	    					jabatan   = '$jabatan',
 	    					foto    = '$nama_baru'
-	                    WHERE id_anggota='$ID'";
+	                    WHERE id_pengurus='$ID'";
 	    mysqli_query($koneksi,$sql);
-	 	header('location:index_anggota.php');
+	 	header('location:index.php');
 	}
 }  else{
     echo "Anda Belum Login, silahkan <a href='../../index.php'>login</a>";

@@ -7,7 +7,7 @@ if (isset($_SESSION['email'])) { // perbedaan isset dan empti adalah isset untuk
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>OSIS | Anggota</title>
+  <title>OSIS | Pengawasan Proker</title>
   <?php
     include '../layout/header.php';
   ?>
@@ -62,7 +62,7 @@ if (isset($_SESSION['email'])) { // perbedaan isset dan empti adalah isset untuk
       <!-- Sidebar user panel -->
       <div class="user-panel">
         <div class="pull-left image">
-          <img src=../foto_user/<?php echo $_SESSION['foto'];?> class="img-circle" alt="User Image" style=" height: 50px; width: 50px;">
+          <img src="../foto_user/<?php echo $_SESSION['foto']; ?>" class="img-circle" alt="User Image" style=" height: 50px; width: 50px;">
         </div>
         <div class="pull-left info">
           <p> <?php echo $_SESSION['nama']; /*<?= $_SESSION['email']; ?> ini sama dengan echo dan ini fersi terpendek*/
@@ -83,7 +83,7 @@ if (isset($_SESSION['email'])) { // perbedaan isset dan empti adalah isset untuk
       <!-- /.search form -->
       <!-- sidebar menu: : style can be found in sidebar.less -->
       <?php
-          include '../layout/sidebar_anggota.php';
+          include '../layout/sidebar.php';
       ?>
     </section>
     <!-- /.sidebar -->
@@ -94,49 +94,43 @@ if (isset($_SESSION['email'])) { // perbedaan isset dan empti adalah isset untuk
     <!-- Content Header (Page header) -->
     <section class="content-header">
       <h1>
-        Anggota OSIS
+        Pengawasan Program Kerja
         <small>Control panel</small>
       </h1>
       <ol class="breadcrumb">
         <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
-        <li class="active">Anggota OSIS</li>
+        <li class="active">Pengawasan Program Kerja</li>
       </ol>
     </section>
 
     <!-- Main content -->
     <section class="content">
-          <div class="box">
+                <div class="box">
             <div class="box-header with-border">
-              <h3 class="box-title">Anggota OSIS</h3>
+              <h3 class="box-title">Pengawasan Program Kerja</h3>
                <div class="box-tools">
+
+            <form class="form-horizontal" action="create.php" method="get" >
                 <?php
                 $pencarian = isset($_GET['cari']) ? $_GET['cari']:'';
                 ?>
-                <form action="" method="get">
-                <a href="create_anggota.php" class="btn btn-primary pull-right">Create</a>
-                <a href="http://localhost/osis/admin/anggota/index_anggota.php" class="btn btn-primary pull-right">Clear</a>
-                  <div class="input-group input-group-sm" style="width: 150px;">
-                    <input type="text" name="cari" class="form-control pull-right" placeholder="Search" value="<?= $pencarian ?>">
+                <input type="hidden" name="cari" value="<?= $pencarian ?>">
+                <button type="submit" class="btn btn-primary pull-right">Cek</button>
+            </form>
 
-                    <div class="input-group-btn">
-                      <button type="submit" class="btn btn-default"><i class="fa fa-search"></i></button>
-                    </div>
-                  </div>
-                </form>
               </div>
             </div>
+
 
             <!-- /.box-header -->
             <div class="box-body">
               <table class="table table-bordered">
                 <tr>
                   <th style="width: 10px">No</th>
-                  <th>Nama</th>
-                  <th>Kelas</th>
-                  <th>Hp</th>
-                  <th>Alamat</th>
                   <th>Jabatan</th>
-                  <th>Foto</th>
+                  <th>Proker</th>
+                  <th>Keterangan</th>
+                  <th>Alasan</th>
                   <th>Action</th>
                 </tr>                
                 <?php
@@ -144,22 +138,20 @@ if (isset($_SESSION['email'])) { // perbedaan isset dan empti adalah isset untuk
                   include '../../config/function.php';
                   $nomor  = 1;
                   $cari   = isset($_GET['cari']) ? $_GET['cari']:'';
-                  $sql    = "SELECT * FROM anggota WHERE nama LIKE '%$cari%'";
+                  $sql    = "SELECT * FROM cek_proker WHERE jabatan=$cari" ;
                   $result = mysqli_query($koneksi,$sql);// untuk menghubungkan databases melalui $connect dengan isinya melalui $sql tetapi masih acak
                   if(mysqli_num_rows($result)>0){// jika nggak ada datanya maka while tidak di jalankan
                     while ($row = mysqli_fetch_assoc($result)) {// untuk memunculkan dalam bentuk rapi, mengambil dan dijadikan erray associative
                       echo "
                       <tr>
                         <td>".$nomor++."</td>
-                        <td>".$row['nama']."</td>
-                        <td>".$row['kelas']."</td>
-                        <td>".$row['hp']."</td>
-                        <td>".$row['alamat']."</td>
                         <td>".jabatan($row['jabatan'])."</td>
-                        <td>".'<img style="width: 100px; height: 100px" src="foto_anggota/'.$row['foto']. ' " />'."</td>
+                        <td>".proker($row['id_proker'])."</td>
+                        <td>".status($row['keterangan'])."</td>
+                        <td>".$row['alasan']."</td>
                         <td>
-                          <a href='edit_anggota.php?id=".$row['id_anggota']."' class='btn btn-primary btn-x5'>Edit</a> |
-                          <a href='hapus_anggota.php?id=".$row['id_anggota']."' class='btn btn-danger btn-x5' onclick='javascript:return confirm(\"Apakah anda yakin ingin menghapus data ini?\")'>Hapus</a>
+                          <a href='edit.php?id=".$row['id_cek']."' class='btn btn-primary btn-x5'>Edit</a> |
+                          <a href='hapus.php?id=".$row['id_cek']."' class='btn btn-danger btn-x5' onclick='javascript:return confirm(\"Apakah anda yakin ingin menghapus data ini?\")'>Hapus</a>
                         </td>
                       </tr>
                       ";
